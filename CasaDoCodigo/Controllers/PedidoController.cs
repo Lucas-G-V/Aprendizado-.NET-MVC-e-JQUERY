@@ -28,7 +28,19 @@ namespace CasaDoCodigo.Controllers
         {
             return View(produtoRepository.GetProdutos());
         }
-
+        public async Task<IActionResult> BuscaDeProdutos(string pesquisa)
+        {
+            if (pesquisa == null)
+            {
+                return  View(produtoRepository.GetCategoriaProdutos());
+            }
+            IList<IGrouping<Categoria, Produto>> produtoscategoria = await produtoRepository.GetCategoriaProdutos(pesquisa);
+            if (produtoscategoria == null)
+            {
+                return View("Caminho não encontrado");
+            }
+            return  View(produtoscategoria);
+        }
         public async Task<IActionResult> Carrinho(string codigo)
         {
             if (!string.IsNullOrEmpty(codigo))
